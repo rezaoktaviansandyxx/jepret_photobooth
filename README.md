@@ -117,7 +117,6 @@ Note: Allow camera permission in your browser when prompted.
 ## 🎨 Frames & Filters
 
 **Frames:**
-
 - Classic - Minimal white strip
 - Doodle Love - Pink doodle with hearts
 - Berry Sweet - Strawberry theme
@@ -125,7 +124,6 @@ Note: Allow camera permission in your browser when prompted.
 - Malang Edition - Local doodle edition, Bakso Malang + Apel Malang + Bromo + Tugu Malang illustration, with 'Malang Pride' text
 
 **Filters:**
-
 - Original
 - B&W
 - Vintage
