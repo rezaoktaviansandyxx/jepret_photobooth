@@ -13,7 +13,7 @@ This project was built as a fun side project while job hunting, to practice came
 
 ## ✨ Features
 
-- **Frame Picker:** 5 cute frames, Classic, Doodle Love, Berry Sweet, Retro Pastel, and Sidoarjo Edition
+- **Frame Picker:** 5 cute frames, Classic, Doodle Love, Berry Sweet, Retro Pastel, and Malang Edition
 - **Auto Capture 3x:** Countdown 3-2-1, auto snap 3 photos with 1 second interval, with progress indicator 1/3, 2/3, 3/3
 - **Live Filter:** Original, B&W, Vintage, Pinky, using Flutter ColorFilter
 - **Retake Per Photo:** Retake only the photo you do not like, no need to restart everything
@@ -122,7 +122,7 @@ Note: Allow camera permission in your browser when prompted.
 - Doodle Love - Pink doodle with hearts
 - Berry Sweet - Strawberry theme
 - Retro Pastel - Purple retro vibe
-- Sidoarjo Edition - Local doodle edition, Bandeng + fun illustration
+- Malang Edition - Local doodle edition, Bakso Malang + Apel Malang + Bromo + Tugu Malang illustration, with 'Malang Pride' text
 
 **Filters:**
 
