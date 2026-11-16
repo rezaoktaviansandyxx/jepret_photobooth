@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.jepret_photobooth"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
