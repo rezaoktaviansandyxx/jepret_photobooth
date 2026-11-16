@@ -164,4 +164,4 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ---
 
-Made with fun while nganggur in Sidoarjo. If you try Jepret, tag me and show your photo strip!
+Made with fun. If you try Jepret, tag me and show your photo strip!
