@@ -1,8 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
+import 'core/router/app_router.dart';
 import 'features/booth/provider/booth_provider.dart';
-import 'features/booth/screens/camera_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class JepretApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => BoothProvider()),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Jepret Photobooth',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -34,8 +34,7 @@ class JepretApp extends StatelessWidget {
           ),
           useMaterial3: true,
         ),
-        // Route langsung diarahkan ke CameraScreen untuk testing
-        home: const CameraScreen(),
+        routerConfig: appRouter,
       ),
     );
   }
