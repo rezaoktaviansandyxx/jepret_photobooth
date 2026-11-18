@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/booth/screens/camera_screen.dart';
 import '../../features/booth/screens/frame_picker_screen.dart';
 import '../../features/booth/screens/home_screen.dart';
+import '../../features/booth/screens/preview_screen.dart';
 import '../../features/booth/screens/result_screen.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -20,7 +21,16 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/camera',
       name: 'camera',
-      builder: (context, state) => const CameraScreen(),
+      builder: (context, state) {
+        final retakeParam = state.uri.queryParameters['retake'];
+        final retakeIndex = retakeParam != null ? int.tryParse(retakeParam) : null;
+        return CameraScreen(retakeIndex: retakeIndex);
+      },
+    ),
+    GoRoute(
+      path: '/preview',
+      name: 'preview',
+      builder: (context, state) => const PreviewScreen(),
     ),
     GoRoute(
       path: '/result',

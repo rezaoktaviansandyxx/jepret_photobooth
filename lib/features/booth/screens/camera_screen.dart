@@ -11,7 +11,9 @@ import '../provider/booth_provider.dart';
 import '../widgets/countdown_overlay.dart';
 
 class CameraScreen extends StatefulWidget {
-  const CameraScreen({super.key});
+  final int? retakeIndex;
+
+  const CameraScreen({super.key, this.retakeIndex});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -100,20 +102,44 @@ class _CameraScreenState extends State<CameraScreen>
     final boothProvider = context.read<BoothProvider>();
     if (boothProvider.isSessionRunning) return;
 
-    boothProvider.startPhotoSession(
-      onTakePicture: () async {
-        return await _cameraService.takePicture();
-      },
-      onSessionCompleted: () {
-        if (!mounted) return;
-        // Pindah ke result screen setelah selesai sesi 3 foto
-        Future.delayed(const Duration(milliseconds: 600), () {
-          if (mounted) {
-            context.push('/result');
-          }
-        });
-      },
-    );
+    final isRetake = widget.retakeIndex != null || boothProvider.isRetakeMode;
+    final targetIndex = widget.retakeIndex ?? boothProvider.retakeIndex ?? 0;
+
+    if (isRetake) {
+      boothProvider.startSingleRetakeSession(
+        index: targetIndex,
+        onTakePicture: () async {
+          return await _cameraService.takePicture();
+        },
+        onCompleted: () {
+          if (!mounted) return;
+          Future.delayed(const Duration(milliseconds: 600), () {
+            if (mounted) {
+              if (context.canPop()) {
+                context.pop();
+              } else {
+                context.go('/preview');
+              }
+            }
+          });
+        },
+      );
+    } else {
+      boothProvider.startPhotoSession(
+        onTakePicture: () async {
+          return await _cameraService.takePicture();
+        },
+        onSessionCompleted: () {
+          if (!mounted) return;
+          // Pindah ke preview screen setelah selesai sesi 3 foto
+          Future.delayed(const Duration(milliseconds: 600), () {
+            if (mounted) {
+              context.push('/preview');
+            }
+          });
+        },
+      );
+    }
   }
 
   Widget _buildThumbnail(XFile photo) {
@@ -558,9 +584,32 @@ class _CameraScreenState extends State<CameraScreen>
 
                 const SizedBox(height: 12),
 
-                // Indikator Foto (Foto 1/3, 2/3, 3/3 & Dots)
+                // Indikator Foto (Foto 1/3, 2/3, 3/3 & Dots atau Retake)
                 Consumer<BoothProvider>(
                   builder: (context, booth, child) {
+                    final isRetake = widget.retakeIndex != null || booth.isRetakeMode;
+                    final target = (widget.retakeIndex ?? booth.retakeIndex ?? 0) + 1;
+                    if (isRetake) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: Text(
+                          'Retake Foto $target dari 3',
+                          style: const TextStyle(
+                            color: Color(0xFFFF4081),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            letterSpacing: 0.5,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black87,
+                                blurRadius: 4,
+                                offset: Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
                     return _buildIndicatorDots(
                       booth.currentPhotoIndex,
                       booth.capturedPhotos.length,
