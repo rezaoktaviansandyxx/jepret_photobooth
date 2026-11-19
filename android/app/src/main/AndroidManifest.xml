@@ -2,14 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission 
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE" 
-        android:maxSdkVersion="29" 
-        tools:replace="android:maxSdkVersion" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-feature android:name="android.hardware.camera.front" android:required="false" />
     <application
-        android:label="jepret_photobooth"
+        android:label="Jepret Photobooth"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
