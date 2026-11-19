@@ -154,12 +154,12 @@ class ImageStitcher {
     final isMalang = payload.frameId == 'malang_edition';
 
     if (isMalang) {
-      // Malang Pride branding
+      // Malang Pride branding & doodles
       const title = 'MALANG PRIDE';
-      const subtitle = 'Bakso Malang * Bromo * Jepret';
+      const subtitle = 'Bakso Malang * Apel * Bromo * Tugu Malang';
 
       // Posisi di footer
-      const textCenterY = 1690;
+      const textCenterY = 1680;
       _drawCenteredString(
         canvas,
         img.arial48,
@@ -175,6 +175,9 @@ class ImageStitcher {
         textCenterY + 70,
         img.ColorRgb8(141, 110, 99), // Cokelat muda (#8D6E63)
       );
+
+      // Gambar doodle dekoratif sederhana khas Malang di area footer samping/bawah
+      _drawMalangDoodles(canvas);
     } else {
       // General Frame footer
       final title = payload.frameName.toUpperCase();
@@ -197,6 +200,45 @@ class ImageStitcher {
         img.ColorRgb8(120, 120, 120),
       );
     }
+  }
+
+  /// Gambar elemen doodle Malang Edition: Bromo mini, Tugu Malang, Apel, Bakso
+  static void _drawMalangDoodles(img.Image canvas) {
+    // Warna tema doodle Malang
+    final doodleBorderColor = img.ColorRgb8(161, 136, 127); // #A1887F
+    final brownFill = img.ColorRgb8(188, 143, 114);
+
+    // 1. Doodle Bromo Mini (gunung segitiga berpasangan di footer kiri)
+    img.drawLine(canvas, x1: 90, y1: 1770, x2: 150, y2: 1690, color: doodleBorderColor);
+    img.drawLine(canvas, x1: 150, y1: 1690, x2: 210, y2: 1770, color: doodleBorderColor);
+    // Kawah bromo
+    img.drawLine(canvas, x1: 135, y1: 1710, x2: 165, y2: 1710, color: doodleBorderColor);
+    // Gunung kecil sebelah bromo
+    img.drawLine(canvas, x1: 190, y1: 1770, x2: 235, y2: 1720, color: doodleBorderColor);
+    img.drawLine(canvas, x1: 235, y1: 1720, x2: 275, y2: 1770, color: doodleBorderColor);
+
+    // 2. Doodle Tugu Malang (obelisk tugu di footer kanan)
+    const int tuguBaseX = 930;
+    img.drawRect(canvas, x1: tuguBaseX - 35, y1: 1765, x2: tuguBaseX + 35, y2: 1775, color: brownFill);
+    img.drawRect(canvas, x1: tuguBaseX - 22, y1: 1750, x2: tuguBaseX + 22, y2: 1765, color: doodleBorderColor);
+    img.drawLine(canvas, x1: tuguBaseX - 12, y1: 1750, x2: tuguBaseX - 6, y2: 1680, color: doodleBorderColor);
+    img.drawLine(canvas, x1: tuguBaseX + 12, y1: 1750, x2: tuguBaseX + 6, y2: 1680, color: doodleBorderColor);
+    // Puncak tugu
+    img.drawLine(canvas, x1: tuguBaseX - 6, y1: 1680, x2: tuguBaseX, y2: 1660, color: doodleBorderColor);
+    img.drawLine(canvas, x1: tuguBaseX + 6, y1: 1680, x2: tuguBaseX, y2: 1660, color: doodleBorderColor);
+
+    // 3. Doodle Apel Malang & Mangkuk Bakso di header atas strip
+    // Mangkuk bakso di header kiri
+    img.drawCircle(canvas, x: 120, y: 38, radius: 16, color: doodleBorderColor);
+    img.fillCircle(canvas, x: 114, y: 32, radius: 6, color: brownFill);
+    img.fillCircle(canvas, x: 126, y: 32, radius: 6, color: brownFill);
+
+    // Apel Malang di header kanan
+    final appleRed = img.ColorRgb8(211, 47, 47);
+    final leafGreen = img.ColorRgb8(76, 175, 80);
+    img.fillCircle(canvas, x: 960, y: 38, radius: 15, color: appleRed);
+    img.drawLine(canvas, x1: 960, y1: 23, x2: 963, y2: 14, color: doodleBorderColor);
+    img.fillCircle(canvas, x: 966, y: 16, radius: 4, color: leafGreen);
   }
 
   /// Utility untuk render teks rata tengah (horizontal center)

@@ -55,52 +55,79 @@ class FrameCard extends StatelessWidget {
                         ),
                       ),
                       child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              frame.placeholderEmoji ?? '🖼️',
-                              style: const TextStyle(fontSize: 32),
-                            ),
-                            const SizedBox(height: 6),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                              child: Text(
-                                frame.placeholderText ?? frame.name,
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (frame.id == 'malang_edition') ...[
-                              const SizedBox(height: 4),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 6,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.deepOrange.shade100,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: const Text(
-                                  'Malang Pride',
-                                  style: TextStyle(
-                                    color: Colors.deepOrange,
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 0.5,
+                        child: frame.id == 'malang_edition'
+                            ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text('🍜', style: TextStyle(fontSize: 20)),
+                                      SizedBox(width: 4),
+                                      Text('🍎', style: TextStyle(fontSize: 24)),
+                                      SizedBox(width: 4),
+                                      Text('🌋', style: TextStyle(fontSize: 20)),
+                                    ],
                                   ),
-                                ),
+                                  const SizedBox(height: 6),
+                                  const Text(
+                                    '🏛️ Tugu Malang',
+                                    style: TextStyle(
+                                      color: Color(0xFF5D4037),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFD4A373).withValues(alpha: 0.25),
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        color: const Color(0xFFD4A373),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'MALANG PRIDE',
+                                      style: TextStyle(
+                                        color: Color(0xFF5D4037),
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.w900,
+                                        letterSpacing: 0.8,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    frame.placeholderEmoji ?? '🖼️',
+                                    style: const TextStyle(fontSize: 32),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                                    child: Text(
+                                      frame.placeholderText ?? frame.name,
+                                      style: const TextStyle(
+                                        color: Colors.black87,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ],
-                        ),
                       ),
                     ),
                   ),

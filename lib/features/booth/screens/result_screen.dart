@@ -182,6 +182,64 @@ class _ResultScreenState extends State<ResultScreen> {
     context.go('/camera');
   }
 
+  /// Widget untuk loading state saat stitching sedang diproses
+  Widget _buildStitchingLoadingState() {
+    return Container(
+      width: 260,
+      height: 380,
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E1E22),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white12, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.4),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 76,
+            height: 76,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFF4081).withValues(alpha: 0.12),
+              shape: BoxShape.circle,
+            ),
+            child: const Center(
+              child: SizedBox(
+                width: 38,
+                height: 38,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3.5,
+                  color: Color(0xFFFF4081),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 28),
+          const _AnimatedDotsText(
+            baseText: 'Lagi gabungin fotomu',
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Menyiapkan strip HD beresolusi tinggi...',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white54,
+              fontSize: 12,
+              height: 1.3,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final booth = context.watch<BoothProvider>();
@@ -267,53 +325,19 @@ class _ResultScreenState extends State<ResultScreen> {
                               ),
                             ),
                           )
+                        else if (booth.isStitching)
+                          // Loading State animasi ketika stitching sedang berjalan
+                          _buildStitchingLoadingState()
                         else
                           // Fallback jika belum selesai di-stitch
-                          Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Transform.scale(
-                                scale: 1.05,
-                                child: PhotoStrip(
-                                  photos: photos,
-                                  frame: selectedFrame,
-                                  filter: selectedFilter,
-                                  showRetakeButton: false,
-                                ),
-                              ),
-                              if (booth.isStitching)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 10,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.black87,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: const Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(
-                                        width: 16,
-                                        height: 16,
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 2,
-                                          color: Color(0xFFFF4081),
-                                        ),
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        'Menyiapkan strip HD...',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                            ],
+                          Transform.scale(
+                            scale: 1.05,
+                            child: PhotoStrip(
+                              photos: photos,
+                              frame: selectedFrame,
+                              filter: selectedFilter,
+                              showRetakeButton: false,
+                            ),
                           ),
 
                         const SizedBox(height: 12),
@@ -464,6 +488,58 @@ class _ResultScreenState extends State<ResultScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Widget teks dengan animasi titik-titik (.) (..) (...)
+class _AnimatedDotsText extends StatefulWidget {
+  final String baseText;
+
+  const _AnimatedDotsText({required this.baseText});
+
+  @override
+  State<_AnimatedDotsText> createState() => _AnimatedDotsTextState();
+}
+
+class _AnimatedDotsTextState extends State<_AnimatedDotsText>
+    with SingleTickerProviderStateMixin {
+  int _dotCount = 0;
+  bool _running = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() async {
+    while (mounted && _running) {
+      await Future.delayed(const Duration(milliseconds: 400));
+      if (!mounted) break;
+      setState(() {
+        _dotCount = (_dotCount + 1) % 4;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _running = false;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final dots = '.' * _dotCount;
+    return Text(
+      '${widget.baseText}$dots',
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.3,
       ),
     );
   }

@@ -100,7 +100,7 @@ class _CameraScreenState extends State<CameraScreen>
 
   void _onShutterPressed() {
     final boothProvider = context.read<BoothProvider>();
-    if (boothProvider.isSessionRunning) return;
+    if (boothProvider.isSessionRunning || boothProvider.isCountingDown) return;
 
     final isRetake = widget.retakeIndex != null || boothProvider.isRetakeMode;
     final targetIndex = widget.retakeIndex ?? boothProvider.retakeIndex ?? 0;
@@ -241,6 +241,103 @@ class _CameraScreenState extends State<CameraScreen>
     );
   }
 
+  Widget _buildEmptyStateOrDenied() {
+    return Scaffold(
+      backgroundColor: const Color(0xFF1E1E1E),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+          onPressed: () {
+            if (context.canPop()) {
+              context.pop();
+            } else {
+              context.go('/frame-picker');
+            }
+          },
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.08),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: const Color(0xFFFF5252).withValues(alpha: 0.5),
+                    width: 2,
+                  ),
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.no_photography_rounded,
+                    size: 52,
+                    color: Color(0xFFFF5252),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                'Kamera belum diizinkan',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.2,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Untuk menggunakan Jepret Photobooth, silakan izinkan akses kamera di Pengaturan HP kamu.',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  height: 1.4,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await openAppSettings();
+                  },
+                  icon: const Icon(Icons.settings_rounded, size: 20),
+                  label: const Text(
+                    'Buka Pengaturan',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
+                    ),
+                    elevation: 4,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -251,59 +348,7 @@ class _CameraScreenState extends State<CameraScreen>
     }
 
     if (_isPermissionDenied) {
-      return Scaffold(
-        backgroundColor: const Color(0xFF1E1E1E),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.no_photography_outlined,
-                  size: 80,
-                  color: Colors.white70,
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Kamera belum diizinkan',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 12),
-                const Text(
-                  'Untuk menggunakan Jepret Photobooth, silakan berikan izin akses kamera.',
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 28),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    await openAppSettings();
-                  },
-                  icon: const Icon(Icons.settings),
-                  label: const Text('Buka Pengaturan'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 14,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+      return _buildEmptyStateOrDenied();
     }
 
     if (_errorMessage != null || !_cameraService.isInitialized) {
@@ -543,7 +588,7 @@ class _CameraScreenState extends State<CameraScreen>
                 // Tombol Shutter Gede di Tengah
                 Consumer<BoothProvider>(
                   builder: (context, booth, child) {
-                    final isBusy = booth.isSessionRunning;
+                    final isBusy = booth.isSessionRunning || booth.isCountingDown;
                     return GestureDetector(
                       onTap: isBusy ? null : _onShutterPressed,
                       child: AnimatedOpacity(

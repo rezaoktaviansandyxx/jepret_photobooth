@@ -48,8 +48,24 @@ class PhotoStrip extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Frame Header / Title (if not Malang)
-          if (frame != null && !isMalang)
+          // Frame Header / Title
+          if (isMalang)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text('🍜', style: TextStyle(fontSize: 14)), // Bakso Malang
+                  SizedBox(width: 8),
+                  Text('🍎', style: TextStyle(fontSize: 16)), // Apel Malang
+                  SizedBox(width: 8),
+                  Text('🌋', style: TextStyle(fontSize: 14)), // Bromo mini
+                  SizedBox(width: 8),
+                  Text('🏛️', style: TextStyle(fontSize: 14)), // Tugu Malang
+                ],
+              ),
+            )
+          else if (frame != null)
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: Row(
@@ -150,24 +166,28 @@ class PhotoStrip extends StatelessWidget {
               padding: const EdgeInsets.only(top: 10, bottom: 2),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Malang Pride',
                     style: TextStyle(
                       color: Color(0xFF5D4037),
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: 1.2,
+                      letterSpacing: 1.5,
                     ),
                   ),
-                  SizedBox(height: 2),
-                  Text(
-                    'Bakso Malang • Bromo',
-                    style: TextStyle(
-                      color: Color(0xFF8D6E63),
-                      fontSize: 9,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  const SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text('🍜 Bakso', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9, fontWeight: FontWeight.bold)),
+                      Text(' • ', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9)),
+                      Text('🍎 Apel', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9, fontWeight: FontWeight.bold)),
+                      Text(' • ', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9)),
+                      Text('🌋 Bromo', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9, fontWeight: FontWeight.bold)),
+                      Text(' • ', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9)),
+                      Text('🏛️ Tugu', style: TextStyle(color: Color(0xFF8D6E63), fontSize: 9, fontWeight: FontWeight.bold)),
+                    ],
                   ),
                 ],
               ),
