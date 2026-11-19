@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import '../../features/booth/screens/camera_screen.dart';
 import '../../features/booth/screens/frame_picker_screen.dart';
+import '../../features/booth/screens/gallery_screen.dart';
 import '../../features/booth/screens/home_screen.dart';
 import '../../features/booth/screens/preview_screen.dart';
 import '../../features/booth/screens/result_screen.dart';
@@ -12,6 +13,11 @@ final GoRouter appRouter = GoRouter(
       path: '/',
       name: 'home',
       builder: (context, state) => const HomeScreen(),
+    ),
+    GoRoute(
+      path: '/gallery',
+      name: 'gallery',
+      builder: (context, state) => const GalleryScreen(),
     ),
     GoRoute(
       path: '/frame-picker',

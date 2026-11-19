@@ -45,9 +45,14 @@ class _ResultScreenState extends State<ResultScreen> {
 
     if (bytes == null) return null;
 
-    final tempDir = await getTemporaryDirectory();
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final stripsDir = Directory('${appDocDir.path}/strips');
+    if (!stripsDir.existsSync()) {
+      await stripsDir.create(recursive: true);
+    }
+
     final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final filePath = '${tempDir.path}/jepret_$timestamp.png';
+    final filePath = '${stripsDir.path}/jepret_$timestamp.png';
     final file = File(filePath);
     await file.writeAsBytes(bytes);
     _savedFilePath = filePath;
