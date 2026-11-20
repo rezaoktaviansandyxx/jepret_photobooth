@@ -9,6 +9,10 @@
 
 Jepret is a solo photobooth app built with Flutter. You choose a frame, the camera takes 3 photos automatically with a 3-2-1 countdown, and you get a cute photo strip ready to download and share.
 
+## 📥 Download APK
+
+[Download Jepret v1.0.0 (Android APK)](https://github.com/rezaoktaviansandyxx/jepret_photobooth/releases/tag/v1.0.0)
+
 This project was built as a fun side project while job hunting, to practice camera handling, image processing, and clean UI slicing in Flutter.
 
 ## ✨ Features
